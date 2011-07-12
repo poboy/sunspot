@@ -18,6 +18,23 @@ module Sunspot
       end
     end
 
+    #
+    # NestedExtractors extract data from nested models by calling the nested model
+    # and mapping the nested model attribute
+    #
+
+    class NestedExtractor
+      def initialize(nested_object, nested_attribute)
+        @nested_object, @nested_attribute = nested_object, nested_attribute
+      end
+      
+      def value_for(object)
+        object.send(@nested_object).map &@nested_attribute
+      end
+      
+    end
+
+
     # 
     # BlockExtractors extract data by evaluating a block in the context of the
     # object instance, or if the block takes an argument, by passing the object
