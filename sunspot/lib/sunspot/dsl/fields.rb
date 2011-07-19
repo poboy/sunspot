@@ -42,6 +42,30 @@ module Sunspot
           )
         end
       end
+      
+      # Passing in a block may not work as intended at this point
+      
+      def nested(*resources,&block)
+        options   = resources.pop if resources.last.is_a?(Hash)
+        resource  = resources.first
+        nested_attributes = options.delete(:with_attributes)
+          
+        puts "DEBUG: Nested attributed: #{nested_attributes}"          
+          
+        nested_attributes.each do |attribute| 
+          name = ( resource.to_s.singularize + '_' + attribute.to_s )
+          
+          options[:nested] = resource
+          options[:with] = attribute 
+          
+          puts "DEBUG: Adding text field factory for #{name}"
+          puts "DEBUG: Adding text field factory with options #{options}"
+          
+          @setup.add_text_field_factory( name, options || {}, &block )
+
+        end
+                
+      end
 
       # 
       # Specify a document-level boost. As with fields, you have the option of
