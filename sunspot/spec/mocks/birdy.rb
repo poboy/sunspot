@@ -1,6 +1,4 @@
-require File.join(File.dirname(__FILE__), 'super_class')
-
-class Birdy < SuperClass
+class Birdy < MockRecord
   
   attr_accessor :name,:color,:type
   
