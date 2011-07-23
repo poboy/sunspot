@@ -19,11 +19,11 @@ module Sunspot
     end
 
     #
-    # NestedExtractors extract data from nested models by calling the nested model
+    # NestedAttributeExtractors extract data from nested models by calling the nested model
     # and mapping the nested model attribute
     #
 
-    class NestedExtractor
+    class NestedAttributeExtractor
       def initialize(nested_object, nested_attribute)
         @nested_object, @nested_attribute = nested_object, nested_attribute
       end

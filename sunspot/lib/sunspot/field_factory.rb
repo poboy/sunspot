@@ -16,12 +16,11 @@ module Sunspot
       def initialize(name, options = {}, &block)
         @name = name.to_sym
 
-        nested_object     = options.delete(:nested) || nil
-        nested_attribute  = options.delete(:with) || nil
+        nested_collection,nested_attribute = options.delete(:nested), options.delete(:with)
         
         @data_extractor =
-          if nested_object && nested_attribute
-            DataExtractor::NestedExtractor.new(nested_object,nested_attribute)
+          if nested_collection && nested_attribute
+            DataExtractor::NestedAttributeExtractor.new(nested_collection,nested_attribute)
           elsif block
             DataExtractor::BlockExtractor.new(&block)
           else

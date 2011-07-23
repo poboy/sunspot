@@ -7,6 +7,6 @@ end
 Sunspot.setup(Nest) do
   
   text :location
-  nested :birdies, :namespace => 'birdy', :with_attributes => [ :name, :color, :type ]
+  nested :birdies, :namespace => 'birdy', :attributes => [ :name, :color, :type ]
   
 end

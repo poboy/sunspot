@@ -49,7 +49,7 @@ module Sunspot
         options   = resources.pop if resources.last.is_a?(Hash)
         resource  = resources.first
         
-        nested_attributes = options.delete(:with_attributes)
+        nested_attributes = options.delete(:attributes)
         namespace         = options.delete(:namespace) || 'nested'
                 
         nested_attributes.each do |attribute|           
