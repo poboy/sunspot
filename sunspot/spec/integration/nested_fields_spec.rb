@@ -9,10 +9,18 @@ describe 'nested_fields' do
     Sunspot.index! @hawk_nest, @eagle_nest
   end
   
-  it 'searches for nested attributes and returns the related object' do
+  it 'searches a nested attribute and returns the related object' do
     Sunspot.search( Nest ) do
       keywords 'black'
     end.results.should == [ @hawk_nest ]
+  end
+  
+  it 'highlights results' do
+    searches = Sunspot.search( Nest ) do
+      keywords 'jackson' do
+        highlight
+      end
+    end.hits.first.highlights.first.field_name.should == :birdy_name    
   end
   
 end
