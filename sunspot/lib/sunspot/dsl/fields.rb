@@ -48,10 +48,12 @@ module Sunspot
       def nested(*resources,&block)
         options   = resources.pop if resources.last.is_a?(Hash)
         resource  = resources.first
+        
         nested_attributes = options.delete(:with_attributes)
+        namespace         = options.delete(:namespace) || 'nested'
                 
-        nested_attributes.each do |attribute| 
-          name = ( resource.to_s.singularize + '_' + attribute.to_s )
+        nested_attributes.each do |attribute|           
+          name = ( namespace + '_' + attribute.to_s )
           
           options[:nested] = resource
           options[:with] = attribute 
