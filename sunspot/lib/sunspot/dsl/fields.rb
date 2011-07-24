@@ -59,7 +59,7 @@ module Sunspot
           nested_options[:nested] = resource
           nested_options[:with] = attribute
           
-          @setup.add_text_field_factory( name, options || {}, &block )
+          @setup.add_text_field_factory( name, nested_options || {}, &block )
 
         end
                 
