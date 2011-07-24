@@ -55,11 +55,11 @@ module Sunspot
         nested_attributes.each do |attribute|           
           name = ( namespace.to_s + '_' + attribute.to_s )
           
-          nested_options  = options
-          nested_options[:nested] = resource
-          nested_options[:with] = attribute
+          options[:nested]  = resource
+          options[:with]    = attribute
+          options[:stored]  = true
           
-          @setup.add_text_field_factory( name, nested_options || {}, &block )
+          @setup.add_text_field_factory( name, options || {}, &block )
 
         end
                 
