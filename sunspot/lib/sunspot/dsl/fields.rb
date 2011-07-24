@@ -53,7 +53,7 @@ module Sunspot
         namespace  = options.delete(:namespace) || :nested
         stored_option = options[:stored]
                 
-        nested_attributes.each do |attribute|           
+        attributes.each do |attribute|           
           name = ( namespace.to_s + '_' + attribute.to_s )
           
           options[:nested]  = resource
