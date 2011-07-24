@@ -49,15 +49,16 @@ module Sunspot
         options   = resources.pop if resources.last.is_a?(Hash)
         resource  = resources.first
         
-        nested_attributes = options.delete(:attributes)
-        namespace         = options.delete(:namespace) || :nested
+        attributes = options.delete(:attributes)
+        namespace  = options.delete(:namespace) || :nested
+        stored_option = options[:stored]
                 
         nested_attributes.each do |attribute|           
           name = ( namespace.to_s + '_' + attribute.to_s )
           
           options[:nested]  = resource
           options[:with]    = attribute
-          options[:stored]  = true
+          options[:stored]  = true if stored_option
           
           @setup.add_text_field_factory( name, options || {}, &block )
 
