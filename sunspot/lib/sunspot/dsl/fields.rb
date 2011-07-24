@@ -50,10 +50,10 @@ module Sunspot
         resource  = resources.first
         
         nested_attributes = options.delete(:attributes)
-        namespace         = options.delete(:namespace) || 'nested'
+        namespace         = options.delete(:namespace) || :nested
                 
         nested_attributes.each do |attribute|           
-          name = ( namespace + '_' + attribute.to_s )
+          name = ( namespace.to_s + '_' + attribute.to_s )
           
           options[:nested] = resource
           options[:with] = attribute 
