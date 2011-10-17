@@ -3,7 +3,7 @@ module Sunspot
     # The Fields class provides a DSL for specifying field definitions in the
     # Sunspot.setup block. As well as the #text method, which creates fulltext
     # fields, uses #method_missing to allow definition of typed fields. The
-    # available methods are determined by the constants defined in 
+    # available methods are determined by the constants defined in
     # Sunspot::Type - in theory (though this is untested), plugin developers
     # should be able to add support for new types simply by creating new
     # implementations in Sunspot::Type
@@ -42,31 +42,29 @@ module Sunspot
           )
         end
       end
-      
-      # Passing in a block may not work as intended at this point
-      
+
       def nested(*resources,&block)
         options   = resources.pop if resources.last.is_a?(Hash)
         resource  = resources.first
-        
-        attributes = options.delete(:attributes)
-        namespace  = options.delete(:namespace) || :nested
-        stored_option = options[:stored]
-                
-        attributes.each do |attribute|           
-          name = ( namespace.to_s + '_' + attribute.to_s )
-          
-          options[:nested]  = resource
-          options[:with]    = attribute
-          options[:stored]  = true if stored_option
-          
-          @setup.add_text_field_factory( name, options || {}, &block )
 
+        attributes    = options.delete(:attributes)
+        namespace     = options.delete(:namespace) || :nested
+        encoding      = options.delete(:encoded_with)
+        stored_option = options[:stored]
+
+        attributes.each do |attribute|
+          name = ( namespace.to_s + '_' + attribute.to_s )
+
+          options[:nested]        = resource
+          options[:with]          = attribute
+          options[:encoded_with]  = encoding
+          options[:stored]        = true if stored_option
+
+          @setup.add_text_field_factory( name, options || {}, &block )
         end
-                
       end
 
-      # 
+      #
       # Specify a document-level boost. As with fields, you have the option of
       # passing an attribute name which will be called on each model, or a block
       # to be evaluated in the model's context. As well as these two options,

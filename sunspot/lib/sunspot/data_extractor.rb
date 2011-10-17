@@ -1,11 +1,11 @@
 module Sunspot
-  # 
+  #
   # DataExtractors present an internal API for the indexer to use to extract
   # field values from models for indexing. They must implement the #value_for
   # method, which takes an object and returns the value extracted from it.
   #
   module DataExtractor #:nodoc: all
-    # 
+    #
     # AttributeExtractors extract data by simply calling a method on the block.
     #
     class AttributeExtractor
@@ -27,15 +27,29 @@ module Sunspot
       def initialize(nested_object, nested_attribute)
         @nested_object, @nested_attribute = nested_object, nested_attribute
       end
-      
+
       def value_for(object)
         object.send(@nested_object).map &@nested_attribute
       end
-      
+
+    end
+
+    class EncodedNestedAttributeExtractor
+      def initialize(nested_object, nested_attribute, encoding)
+        @nested_objects, @nested_attribute, @encoding = nested_object, nested_attribute,encoding
+      end
+
+      def value_for(object)
+        object.send(@nested_objects).map do |nested_object|
+          if value = nested_object.send(@nested_attribute)
+            value += " [#{nested_object.send(@encoding).id}] "
+          end
+        end
+      end
     end
 
 
-    # 
+    #
     # BlockExtractors extract data by evaluating a block in the context of the
     # object instance, or if the block takes an argument, by passing the object
     # as the argument to the block. Either way, the return value of the block is
@@ -51,7 +65,7 @@ module Sunspot
       end
     end
 
-    # 
+    #
     # Constant data extractors simply return the same value for every object.
     #
     class Constant
