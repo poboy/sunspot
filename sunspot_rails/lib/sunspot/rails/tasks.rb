@@ -30,7 +30,7 @@ namespace :sunspot do
   # By default the indexing system works in batches of 50 records, you can \
   # set your own value for this by using the batch_size argument. You can \
   # also optionally define a list of models to separated by a forward slash '/'
-  # 
+  #
   # $ rake sunspot:reindex                # reindex all models
   # $ rake sunspot:reindex[1000]          # reindex in batches of 1000
   # $ rake sunspot:reindex[false]         # reindex without batching
@@ -43,12 +43,13 @@ namespace :sunspot do
     case args[:batch_size]
     when 'false'
       reindex_options[:batch_size] = nil
-    when /^\d+$/ 
+    when /^\d+$/
       reindex_options[:batch_size] = args[:batch_size].to_i if args[:batch_size].to_i > 0
     end
     unless args[:models]
       models_path = Rails.root.join('app', 'models')
       all_files = Dir.glob(models_path.join('**', '*.rb'))
+      all_files.delete_if( |path| path =~ ( ENV['ignore'] || /api|concerns/) )
       all_models = all_files.map { |path| path.sub(models_path.to_s, '')[0..-4].camelize.sub(/^::/, '').constantize rescue nil }.compact
       sunspot_models = all_models.select { |m| m < ActiveRecord::Base and m.searchable? }
     else
@@ -58,5 +59,5 @@ namespace :sunspot do
       model.solr_reindex reindex_options
     end
   end
-  
+
 end
