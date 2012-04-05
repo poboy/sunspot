@@ -49,7 +49,7 @@ namespace :sunspot do
     unless args[:models]
       models_path = Rails.root.join('app', 'models')
       all_files = Dir.glob(models_path.join('**', '*.rb'))
-      all_files.delete_if( |path| path =~ ( ENV['ignore'] || /api|concerns/) )
+      all_files.delete_if { |path| path =~ ( ENV['ignore'] || /api|concerns/) }
       all_models = all_files.map { |path| path.sub(models_path.to_s, '')[0..-4].camelize.sub(/^::/, '').constantize rescue nil }.compact
       sunspot_models = all_models.select { |m| m < ActiveRecord::Base and m.searchable? }
     else
